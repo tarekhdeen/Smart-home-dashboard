@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const DeviceCard = ({ device, onToggle }) => {
   // Helper function to get icon based on device type
@@ -38,6 +39,17 @@ const DeviceCard = ({ device, onToggle }) => {
       </div>
     </div>
   );
+};
+
+DeviceCard.propTypes = {
+  device: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    name: PropTypes.string,
+    type: PropTypes.oneOf(['light', 'thermostat']).isRequired,
+    state: PropTypes.oneOf(['on', 'off']),
+    temperature: PropTypes.number,
+  }).isRequired,
+  onToggle: PropTypes.func.isRequired,
 };
 
 export default DeviceCard;

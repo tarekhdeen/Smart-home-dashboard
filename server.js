@@ -2,7 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import devices from './mockDevices.js';
+import devices from './shared/devices.js';
 
 const app = express();
 const http = createServer(app);

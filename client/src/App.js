@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
-import DeviceCard from './DeviceCard';
+import RoomSection from './RoomSection';
+import rooms from './data/rooms';
 import './styles.css';
 
 function App() {
@@ -69,10 +70,11 @@ function App() {
     <div className="App">
       <h1>Smart Home Dashboard</h1>
       <div className="device-grid">
-        {Object.values(devices).map(device => (
-          <DeviceCard
-            key={device.id}
-            device={device}
+        {Object.values(rooms).map(room => (
+          <RoomSection
+            key={room.id}
+            room={room}
+            devices={devices}
             onToggle={toggleDevice}
           />
         ))}
