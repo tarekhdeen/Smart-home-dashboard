@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
-import RoomSection from './RoomSection';
-import rooms from './data/rooms';
+import Register from './Register';
+import Login from './Login';
+import SideNav from './SideNav';
+import Dashboard from './Dashboard';
 import './styles.css';
 
 function App() {
   const [devices, setDevices] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetchDevices();
-    setupWebSocket();
-  }, []);
+    if (isAuthenticated) {
+      fetchDevices();
+      const cleanup = setupWebSocket();
+      return cleanup;
+    }
+  }, [isAuthenticated]);
 
   const fetchDevices = () => {
     axios.get('http://localhost:3000/api/devices')
@@ -63,21 +70,36 @@ function App() {
       .catch(err => console.error("Error toggling device:", err));
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error">Error: {error}</div>;
-
   return (
-    <div className="App">
-      <h1>Smart Home Dashboard</h1>
-      <div className="device-grid">
-        {Object.values(rooms).map(room => (
-          <RoomSection
-            key={room.id}
-            room={room}
-            devices={devices}
-            onToggle={toggleDevice}
+    <div className="app-container">
+      <SideNav isAuthenticated={isAuthenticated} />
+      <div className="main-content">
+        <Routes>
+          <Route 
+            path="/register" 
+            element={<Register onRegister={() => setIsAuthenticated(true)} />} 
           />
-        ))}
+          <Route 
+            path="/login" 
+            element={<Login onLogin={() => setIsAuthenticated(true)} />} 
+          />
+          <Route
+            path="/dashboard"
+            element={
+              isAuthenticated ? (
+                <Dashboard
+                  loading={loading}
+                  error={error}
+                  devices={devices}
+                  onToggle={toggleDevice}
+                />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
       </div>
     </div>
   );
