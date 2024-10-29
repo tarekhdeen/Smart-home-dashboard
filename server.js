@@ -7,6 +7,7 @@ import userRoutes from './routes/userRoutes.js';
 import deviceRoutes from './routes/deviceRoutes.js';
 import roomRoutes from './routes/roomRoutes.js';
 import Device from './models/device.js';
+import devices from './shared/devices.js';  // Import static devices
 
 const app = express();
 const http = createServer(app);
@@ -32,11 +33,11 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/users', userRoutes);        // User routes for authentication
-app.use('/api/devices', deviceRoutes);     // Device routes for device management
-app.use('/api/rooms', roomRoutes);         // Room routes for room management
+app.use('/api/users', userRoutes);
+app.use('/api/devices', deviceRoutes);
+app.use('/api/rooms', roomRoutes);
 
-// WebSocket for real-time device updates
+// WebSocket connection handling
 io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
 
@@ -45,16 +46,46 @@ io.on('connection', (socket) => {
   });
 });
 
+// Helper function to get all thermostats (both static and from DB)
+const getAllThermostats = async () => {
+  // Get static thermostats
+  const staticThermostats = Object.values(devices).filter(
+    device => device.type === 'thermostat'
+  );
+
+  // Get database thermostats
+  const dbThermostats = await Device.find({ type: 'thermostat' });
+
+  return [...staticThermostats, ...dbThermostats];
+};
+
 // Real-time update simulation for thermostats
 setInterval(async () => {
   try {
-    const devices = await Device.find({ type: 'thermostat' }); // Assuming `Device` is imported from models
-    const randomDevice = devices[Math.floor(Math.random() * devices.length)];
+    const allThermostats = await getAllThermostats();
+    
+    if (allThermostats.length > 0) {
+      // Pick a random thermostat
+      const randomThermostat = allThermostats[Math.floor(Math.random() * allThermostats.length)];
+      
+      if (randomThermostat) {
+        // Update temperature
+        const temperatureChange = Math.random() > 0.5 ? 1 : -1;
 
-    if (randomDevice) {
-      randomDevice.temperature += Math.random() > 0.5 ? 1 : -1;
-      await randomDevice.save();
-      io.emit('deviceUpdate', randomDevice);
+        // Check if it's a static thermostat
+        if (devices[randomThermostat.id]) {
+          devices[randomThermostat.id].temperature += temperatureChange;
+          io.emit('deviceUpdate', devices[randomThermostat.id]);
+        } 
+        // If it's a database thermostat
+        else if (randomThermostat instanceof mongoose.Model) {
+          randomThermostat.temperature += temperatureChange;
+          await randomThermostat.save();
+          io.emit('deviceUpdate', randomThermostat);
+        }
+
+        console.log(`Updated thermostat ${randomThermostat.id} temperature`);
+      }
     }
   } catch (error) {
     console.error('Error updating thermostat:', error);

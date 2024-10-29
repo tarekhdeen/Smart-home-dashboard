@@ -92,6 +92,7 @@ function App() {
                   error={error}
                   devices={devices}
                   onToggle={toggleDevice}
+                  setIsAuthenticated={setIsAuthenticated}
                 />
               ) : (
                 <Navigate to="/login" replace />
@@ -105,4 +106,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
