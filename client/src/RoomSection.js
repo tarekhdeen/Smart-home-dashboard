@@ -12,6 +12,7 @@ const RoomSection = ({ room, devices, onToggle }) => {
       return <div>No devices in this room</div>;
   }
 
+
   return (
     <div className="room-section">
       <div className="room-header">
@@ -42,8 +43,11 @@ RoomSection.propTypes = {
   devices: PropTypes.objectOf(PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     name: PropTypes.string,
-    type: PropTypes.oneOf(['light', 'thermostat']).isRequired,
-    state: PropTypes.oneOf(['on', 'off']),
+    type: PropTypes.oneOf(['light', 'thermostat', 'camera', 'doorLock', 'blind']).isRequired,
+    state: PropTypes.oneOf(['on', 'off', 'locked', 'unlocked', 'stopped', 'moving']),
+    isRecording: PropTypes.bool,
+    batteryLevel: PropTypes.number,
+    position: PropTypes.number,
     temperature: PropTypes.number,
   })).isRequired,
   onToggle: PropTypes.func.isRequired,

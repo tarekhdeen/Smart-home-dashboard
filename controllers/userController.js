@@ -9,6 +9,7 @@ export const registerUser = async (req, res) => {
     const newUser = await User.create({ username, password: hashedPassword, email });
     res.status(201).json(newUser);
   } catch (error) {
+    console.error("Registration failed:", error);
     res.status(400).json({ message: error.message });
   }
 };

@@ -1,5 +1,7 @@
-import { Schema as _Schema, model } from 'mongoose';
+import mongoose, { Schema as _Schema, model } from 'mongoose';
 const Schema = _Schema;
+
+mongoose.set('debug', true);
 
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },

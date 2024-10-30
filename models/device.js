@@ -6,7 +6,23 @@ const deviceSchema = new Schema({
   name: { type: String, required: true },
   type: { type: String, required: true },
   state: { type: String, default: 'off' },
-  temperature: { type: Number }
+  temperature: { type: Number },
+  
+  // Camera specific fields
+  isRecording: Boolean,
+  streamUrl: String,
+  resolution: String,
+  nightVision: Boolean,
+  
+  // Door lock specific fields
+  batteryLevel: Number,
+  lastAccessTime: Date,
+  autoLock: Boolean,
+  autoLockDelay: Number,
+  
+  // Blind specific fields
+  position: Number,
+  tiltAngle: Number
 });
 
 export default model('Device', deviceSchema);
