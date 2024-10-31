@@ -1,6 +1,6 @@
 /* Base side navigation styles */
 .side-nav {
-  width: 250px;
+  width: 150px;
   background-color: #1a1a1a;
   color: white;
   padding: 20px;
@@ -52,6 +52,22 @@
 
 .nav-links li.active a {
   background-color: #4CAF50;
+}
+
+.room-link-button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 6px;
+}
+
+.room-link-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Sign out button */

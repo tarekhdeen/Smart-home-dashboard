@@ -1,8 +1,8 @@
 import React, { useState } from 'react'; 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import rooms from './data/rooms';
-import './styles/SideNav.css';
+import rooms from '../data/rooms';
+import '../styles/SideNav.css';
 
 const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
   const location = useLocation();
@@ -17,6 +17,18 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
     localStorage.removeItem('authtoken');
     setIsAuthenticated(false);
     navigate('/login');
+  };
+
+   // Handle room link click to scroll to room
+    const handleRoomClick = (roomId) => {
+    // If already on dashboard, use hash navigation
+    if (location.pathname === '/dashboard') {
+      window.location.hash = `room-${roomId}`;
+    } else {
+      // Navigate to dashboard with room hash
+      navigate(`/dashboard#room-${roomId}`);
+    }
+    setNavOpen(false);
   };
 
   return (
@@ -50,11 +62,16 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
                 <Link to="/dashboard" onClick={() => setNavOpen(false)}>Dashboard</Link>
               </li>
               <ul className="room-links">
-            {Object.keys(rooms).map(roomId => (
-              <li key={roomId}>
-                <Link to={`/dashboard/${roomId}`}>{rooms[roomId].name}</Link>
-              </li>
-            ))}
+                {Object.keys(rooms).map(roomId => (
+                  <li key={roomId}>
+                    <button 
+                      onClick={() => handleRoomClick(roomId)}
+                      className="room-link-button"
+                    >
+                      {rooms[roomId].name}
+                    </button>
+                  </li>
+                ))}
               </ul>
               <li>
                 <button onClick={signOut} className="sign-out-button">

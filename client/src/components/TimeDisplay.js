@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './TimeDisplay.css';
+import '../styles/TimeDisplay.css';
 
 function TimeDisplay() {
   const [currentTime, setCurrentTime] = useState(new Date());

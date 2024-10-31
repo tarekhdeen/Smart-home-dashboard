@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DeviceCard from './DeviceCard';
-import './styles/RoomSection.css';
+import '../styles/RoomSection.css';
 
 const RoomSection = ({ room, devices, onToggle }) => {
   // Filter devices that belong to this room

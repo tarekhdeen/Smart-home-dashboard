@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './styles/DeviceCard.css';
+import '../styles/DeviceCard.css';
 
 const DeviceCard = ({ device, onToggle }) => {
   // Helper function to get icon based on device type
