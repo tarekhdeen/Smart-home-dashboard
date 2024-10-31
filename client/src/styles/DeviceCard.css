@@ -1,0 +1,106 @@
+.device-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.device-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.device-card:hover {
+  transform: translateY(-2px);
+}
+
+.device-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.device-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.device-name {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Button styles */
+.toggle-button, .blind-button, .lock-button, .camera-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.toggle-button.on, .blind-button.open, .lock-button.unlocked, .camera-button.stop-recording {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.toggle-button.off, .blind-button.closed, .lock-button.locked, .camera-button.start-recording {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Temperature display */
+.temperature-display {
+  text-align: center;
+  padding: 10px;
+}
+
+.temperature-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  }
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+  .device-grid {
+    gap: 0.875rem;
+    padding: 0.875rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .device-grid {
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .device-card {
+    padding: 0.75rem;
+  }
+  
+  .device-header {
+    margin-bottom: 0.625rem;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+  .device-card:hover {
+    transform: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .toggle-button:hover,
+  .blind-button:hover,
+  .lock-button:hover,
+  .camera-button:hover {
+    transform: none;
+  }
+}

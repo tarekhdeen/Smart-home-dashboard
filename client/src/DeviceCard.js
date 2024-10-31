@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './styles/DeviceCard.css';
 
 const DeviceCard = ({ device, onToggle }) => {
   // Helper function to get icon based on device type
@@ -52,7 +53,7 @@ const DeviceCard = ({ device, onToggle }) => {
         {device.type === 'doorLock' && (
           <button className={`lock-button ${device.state === 'locked' ? 'locked' : 'unlocked'}`} 
           onClick={() => onToggle(device.id)}>
-            {device.state === 'locked' ? 'Unlocked' : 'Locked'}
+            {device.state === 'locked' ? 'Unlock' : 'Lock'}
           </button>
         )}
         {device.type === 'blind' && (

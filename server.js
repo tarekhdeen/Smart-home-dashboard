@@ -7,7 +7,7 @@ import userRoutes from './routes/userRoutes.js';
 import deviceRoutes from './routes/deviceRoutes.js';
 import roomRoutes from './routes/roomRoutes.js';
 import Device from './models/device.js';
-import devices from './shared/devices.js';  // Import static devices
+import devices from './shared/devices.js';
 
 const app = express();
 const http = createServer(app);

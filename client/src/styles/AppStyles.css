@@ -1,0 +1,77 @@
+/* Base styles */
+.App {
+  padding: clamp(1rem, 3vw, 1.25rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: clamp(1rem, 3vw, 1.25rem);
+  width: calc(100% - 250px);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+h1 {
+  color: #333;
+  text-align: left;
+  margin-left: clamp(1rem, 5vw, 2.5rem);
+  margin-bottom: clamp(1rem, 3vh, 1.875rem);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+/* Tablet styles */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    margin-left: 200px;
+  }
+
+  .App {
+    padding: 1rem;
+  }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 60px;
+  }
+
+  h1 {
+    margin-left: 1rem;
+    text-align: center;
+  }
+}
+
+/* Small mobile styles */
+@media screen and (max-width: 480px) {
+  .App {
+    padding: 0.75rem;
+  }
+
+  .main-content {
+    padding: 0.75rem;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+}

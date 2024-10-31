@@ -6,7 +6,7 @@ import Register from './Register';
 import Login from './Login';
 import SideNav from './SideNav';
 import Dashboard from './Dashboard';
-import './styles.css';
+import './styles/AppStyles.css';
 
 function App() {
   const [devices, setDevices] = useState({});
@@ -72,7 +72,8 @@ function App() {
 
   return (
     <div className="app-container">
-      <SideNav isAuthenticated={isAuthenticated} />
+      <SideNav isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated} />
       <div className="main-content">
         <Routes>
           <Route 

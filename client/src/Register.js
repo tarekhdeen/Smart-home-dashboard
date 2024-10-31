@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './styles/AuthForm.css';
 
 const Register = ({ onRegister }) => {
     const [email, setEmail] = useState('');
@@ -22,6 +23,8 @@ const Register = ({ onRegister }) => {
             setMessage(`Error registering user: ${error.message}`);
         }
     };
+
+    localStorage.setItem('username', username);
 
     return (
         <div className="auth-form">

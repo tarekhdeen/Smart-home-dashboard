@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './styles/AuthForm.css';
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -20,6 +21,8 @@ const Login = ({ onLogin }) => {
             setMessage(`Error logging in: ${error.response?.data?.message || error.message}`);
         }
     };
+
+    localStorage.setItem('username', username);
 
     return (
         <div className="auth-form">

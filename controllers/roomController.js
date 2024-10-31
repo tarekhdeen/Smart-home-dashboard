@@ -2,7 +2,7 @@ import Room from '../models/room.js';
 
 export async function getAllRooms(req, res) {
   try {
-    const rooms = await find();
+    const rooms = await Room.find();
     res.json(rooms);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching rooms', error: error.message });

@@ -1,0 +1,113 @@
+/* Base side navigation styles */
+.side-nav {
+  width: 250px;
+  background-color: #1a1a1a;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease; /* Smooth slide-in effect */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo and links styling */
+.nav-logo {
+  margin-bottom: 30px;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+}
+
+.nav-logo h2 {
+  margin: 0;
+  color: white;
+  text-align: center;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.nav-links li {
+  margin: 10px 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  display: block;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: #333;
+}
+
+.nav-links li.active a {
+  background-color: #4CAF50;
+}
+
+/* Sign out button */
+
+.sign-out-button-container {
+  margin-top: auto;
+  padding: 10px;
+  width: 100%;
+}
+
+
+.sign-out-button {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #d9534f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sign-out-button:hover {
+  background-color: #c9302c;
+}
+
+.sign-out-button:focus {
+  outline: none;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  /* Narrower width for tablet screens */
+  .side-nav {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hidden side navigation on small screens */
+  .side-nav {
+    transform: translateX(-100%); /* Hide by shifting left */
+    width: 100%;
+  }
+  
+  /* Show side-nav when open */
+  .side-nav.open {
+    transform: translateX(0);
+  }
+  
+  /* Adjust padding and text alignment for mobile */
+  .nav-logo h2, .nav-links a {
+    text-align: left;
+    padding: 15px;
+  }
+}
