@@ -3,87 +3,200 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import rooms from '../data/rooms';
 import '../styles/SideNav.css';
+import { 
+  LayoutDashboard, 
+  History, 
+  Timer, 
+  MessageSquare,
+  Settings,
+  HelpCircle,
+  Menu,
+  LogOut,
+  ChevronRight
+} from 'lucide-react';
 
 const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isNavOpen, setNavOpen] = useState(false);
 
-  // Toggle function to open/close nav
-  const toggleNav = () => setNavOpen(!isNavOpen);
+  const mainNavItems = [
+    { 
+      icon: LayoutDashboard, 
+      label: 'Dashboard', 
+      path: '/dashboard',
+      isActive: location.pathname === '/dashboard' && !location.hash
+    },
+    { 
+      icon: History, 
+      label: 'Recent', 
+      path: '/recent',
+      isActive: location.pathname === '/recent'
+    },
+    { 
+      icon: Timer, 
+      label: 'Scheduled', 
+      path: '/scheduled',
+      isActive: location.pathname === '/scheduled'
+    },
+    { 
+      icon: MessageSquare, 
+      label: 'Notifications', 
+      path: '/notifications',
+      isActive: location.pathname === '/notifications'
+    }
+  ];
 
-  // Sign-out function
+  const bottomNavItems = [
+    { 
+      icon: Settings, 
+      label: 'Settings', 
+      path: '/settings',
+      isActive: location.pathname === '/settings'
+    },
+    { 
+      icon: HelpCircle, 
+      label: 'Support', 
+      path: '/support',
+      isActive: location.pathname === '/support'
+    }
+  ];
+
+  const handleRoomClick = (roomId) => {
+    if (location.pathname === '/dashboard') {
+      window.location.hash = `room-${roomId}`;
+    } else {
+      navigate(`/dashboard#room-${roomId}`);
+    }
+    setNavOpen(false);
+  };
+
   const signOut = () => {
     localStorage.removeItem('authtoken');
     setIsAuthenticated(false);
     navigate('/login');
   };
 
-   // Handle room link click to scroll to room
-    const handleRoomClick = (roomId) => {
-    // If already on dashboard, use hash navigation
-    if (location.pathname === '/dashboard') {
-      window.location.hash = `room-${roomId}`;
-    } else {
-      // Navigate to dashboard with room hash
-      navigate(`/dashboard#room-${roomId}`);
-    }
-    setNavOpen(false);
-  };
-
   return (
-    <div>
-      {/* Toggle Button (visible only on mobile) */}
+    <>
+      {/* Mobile Menu Button */}
       <button
-        className="nav-toggle-btn"
-        onClick={toggleNav}
+        className={`mobile-menu-button ${isNavOpen ? 'active' : ''}`}
+        onClick={() => setNavOpen(!isNavOpen)}
       >
-        {isNavOpen ? 'Close' : 'Menu'}
+        <Menu className="menu-icon" />
       </button>
 
+      {/* Overlay for mobile */}
+      {isNavOpen && (
+        <div 
+          className="mobile-overlay"
+          onClick={() => setNavOpen(false)}
+        />
+      )}
+
       {/* Side Navigation */}
-      <nav className={`side-nav ${isNavOpen ? 'open' : ''}`}>
-        <div className="nav-logo">
-          <h2>Smart Home</h2>
+      <nav className={`sidenav ${isNavOpen ? 'open' : ''}`}>
+        {/* Logo Section */}
+        <div className="logo-section">
+          <div className="logo" />
+          <span className="logo-text">Houseplan</span>
         </div>
-        <ul className="nav-links">
-          {!isAuthenticated ? (
-            <>
-              <li className={location.pathname === '/login' ? 'active' : ''}>
-                <Link to="/login" onClick={() => setNavOpen(false)}>Login</Link>
-              </li>
-              <li className={location.pathname === '/register' ? 'active' : ''}>
-                <Link to="/register" onClick={() => setNavOpen(false)}>Register</Link>
-              </li>
-            </>
-          ) : (
-            <>
-              <li className={location.pathname === '/dashboard' ? 'active' : ''}>
-                <Link to="/dashboard" onClick={() => setNavOpen(false)}>Dashboard</Link>
-              </li>
-              <ul className="room-links">
-                {Object.keys(rooms).map(roomId => (
-                  <li key={roomId}>
-                    <button 
-                      onClick={() => handleRoomClick(roomId)}
-                      className="room-link-button"
-                    >
-                      {rooms[roomId].name}
-                    </button>
-                  </li>
+
+        {/* Main Navigation */}
+        <div className="nav-content">
+          {/* Primary Nav Items */}
+          <div className="primary-nav">
+            {!isAuthenticated ? (
+              <>
+                <NavItem 
+                  icon={LayoutDashboard}
+                  label="Login"
+                  path="/login"
+                  isActive={location.pathname === '/login'}
+                  onClick={() => setNavOpen(false)}
+                />
+                <NavItem 
+                  icon={History}
+                  label="Register"
+                  path="/register"
+                  isActive={location.pathname === '/register'}
+                  onClick={() => setNavOpen(false)}
+                />
+              </>
+            ) : (
+              <>
+                {mainNavItems.map((item) => (
+                  <NavItem 
+                    key={item.label}
+                    {...item}
+                    onClick={() => setNavOpen(false)}
+                  />
                 ))}
-              </ul>
-              <li>
-                <button onClick={signOut} className="sign-out-button">
-                  Sign Out
-                </button>
-              </li>
-            </>
+
+                {/* Rooms Section */}
+                <div className="rooms-section">
+                  <div className="rooms-header">Rooms</div>
+                  {Object.entries(rooms).map(([roomId, room]) => (
+                    <button
+                      key={roomId}
+                      onClick={() => handleRoomClick(roomId)}
+                      className={`room-button ${location.hash === `#room-${roomId}` ? 'active' : ''}`}
+                    >
+                      <ChevronRight className="chevron-icon" />
+                      <span>{room.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Bottom Navigation */}
+          {isAuthenticated && (
+            <div className="bottom-nav">
+              {bottomNavItems.map((item) => (
+                <NavItem 
+                  key={item.label}
+                  {...item}
+                  onClick={() => setNavOpen(false)}
+                />
+              ))}
+              
+              {/* Sign Out Button */}
+              <button
+                onClick={signOut}
+                className="sign-out-button"
+              >
+                <LogOut className="signout-icon" />
+                <span>Sign Out</span>
+              </button>
+            </div>
           )}
-        </ul>
+        </div>
       </nav>
-    </div>
+    </>
   );
+};
+
+// NavItem Component
+const NavItem = ({ icon: Icon, label, path, isActive, onClick }) => (
+  <Link
+    to={path}
+    onClick={onClick}
+    className={`nav-item ${isActive ? 'active' : ''}`}
+  >
+    <Icon className="nav-icon" />
+    <span>{label}</span>
+  </Link>
+);
+
+NavItem.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  label: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 SideNav.propTypes = {
