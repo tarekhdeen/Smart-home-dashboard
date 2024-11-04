@@ -6,10 +6,10 @@
 }
 
 .device-card {
-  background: white;
+  background: #111827;
   border-radius: 10px;
   padding: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
 }
 
@@ -31,11 +31,14 @@
 .device-name {
   margin: 0;
   font-size: 18px;
-  color: #333;
+  color: #9ca3af;
 }
 
 /* Button styles */
-.toggle-button, .blind-button, .lock-button, .camera-button {
+.toggle-button,
+.blind-button,
+.lock-button,
+.camera-button {
   width: 100%;
   padding: 10px;
   border: none;
@@ -45,13 +48,19 @@
   transition: background-color 0.3s;
 }
 
-.toggle-button.on, .blind-button.open, .lock-button.unlocked, .camera-button.stop-recording {
-  background-color: #4CAF50;
+.toggle-button.on,
+.blind-button.open,
+.lock-button.unlocked,
+.camera-button.stop-recording {
+  background-color: #4caf50;
   color: white;
 }
 
-.toggle-button.off, .blind-button.closed, .lock-button.locked, .camera-button.start-recording {
-  background-color: #f0f0f0;
+.toggle-button.off,
+.blind-button.closed,
+.lock-button.locked,
+.camera-button.start-recording {
+  background-color: #b7babe;
   color: #333;
 }
 
@@ -64,8 +73,8 @@
 .temperature-value {
   font-size: 24px;
   font-weight: bold;
-  color: #333;
-  }
+  color: #9ca3af;
+}
 
 /* Media Queries */
 @media screen and (max-width: 768px) {
@@ -80,11 +89,11 @@
     gap: 0.75rem;
     padding: 0.75rem;
   }
-  
+
   .device-card {
     padding: 0.75rem;
   }
-  
+
   .device-header {
     margin-bottom: 0.625rem;
   }
@@ -94,9 +103,9 @@
 @media (hover: none) {
   .device-card:hover {
     transform: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
-  
+
   .toggle-button:hover,
   .blind-button:hover,
   .lock-button:hover,
