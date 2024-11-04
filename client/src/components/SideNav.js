@@ -6,11 +6,13 @@ import '../styles/SideNav.css';
 import { 
   LayoutDashboard, 
   History, 
-  Timer, 
-  MessageSquare,
+  Timer,
+  Cctv, 
   Settings,
   HelpCircle,
   Menu,
+  NotebookPen,
+  LogIn,
   LogOut,
   ChevronRight
 } from 'lucide-react';
@@ -40,10 +42,10 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
       isActive: location.pathname === '/scheduled'
     },
     { 
-      icon: MessageSquare, 
-      label: 'Notifications', 
-      path: '/notifications',
-      isActive: location.pathname === '/notifications'
+      icon: Cctv, 
+      label: 'Cameras Records', 
+      path: '/CamerasRecords',
+      isActive: location.pathname === '/CamerasRecords'
     }
   ];
 
@@ -100,7 +102,7 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
         {/* Logo Section */}
         <div className="logo-section">
           <div className="logo" />
-          <span className="logo-text">Houseplan</span>
+          <span className="logo-text">Smart Home</span>
         </div>
 
         {/* Main Navigation */}
@@ -110,14 +112,14 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
             {!isAuthenticated ? (
               <>
                 <NavItem 
-                  icon={LayoutDashboard}
+                  icon={LogIn}
                   label="Login"
                   path="/login"
                   isActive={location.pathname === '/login'}
                   onClick={() => setNavOpen(false)}
                 />
                 <NavItem 
-                  icon={History}
+                  icon={NotebookPen}
                   label="Register"
                   path="/register"
                   isActive={location.pathname === '/register'}

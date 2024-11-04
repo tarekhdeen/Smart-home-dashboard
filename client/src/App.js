@@ -6,6 +6,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import SideNav from './components/SideNav';
 import Dashboard from './components/Dashboard';
+import CamerasRecords from './components/CamerasRecords';
 import './styles/AppStyles.css';
 
 function App() {
@@ -101,6 +102,12 @@ function App() {
             }
           />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/CamerasRecords"
+          element={<CamerasRecords
+            devices={devices}
+            onToggle={toggleDevice} />
+          }
+          />
         </Routes>
       </div>
     </div>
