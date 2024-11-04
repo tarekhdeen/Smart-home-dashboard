@@ -1,21 +1,21 @@
-import React, { useState } from 'react'; 
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import rooms from '../data/rooms';
-import '../styles/SideNav.css';
-import { 
-  LayoutDashboard, 
-  History, 
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import rooms from "../data/rooms";
+import "../styles/SideNav.css";
+import {
+  LayoutDashboard,
+  History,
   Timer,
-  Cctv, 
+  Cctv,
   Settings,
   HelpCircle,
   Menu,
   NotebookPen,
   LogIn,
   LogOut,
-  ChevronRight
-} from 'lucide-react';
+  ChevronRight,
+} from "lucide-react";
 
 const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
   const location = useLocation();
@@ -23,49 +23,49 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
   const [isNavOpen, setNavOpen] = useState(false);
 
   const mainNavItems = [
-    { 
-      icon: LayoutDashboard, 
-      label: 'Dashboard', 
-      path: '/dashboard',
-      isActive: location.pathname === '/dashboard' && !location.hash
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      path: "/dashboard",
+      isActive: location.pathname === "/dashboard" && !location.hash,
     },
-    { 
-      icon: History, 
-      label: 'Recent', 
-      path: '/recent',
-      isActive: location.pathname === '/recent'
+    {
+      icon: History,
+      label: "Recent",
+      path: "/Recent",
+      isActive: location.pathname === "/Recent",
     },
-    { 
-      icon: Timer, 
-      label: 'Scheduled', 
-      path: '/scheduled',
-      isActive: location.pathname === '/scheduled'
+    {
+      icon: Timer,
+      label: "Scheduled",
+      path: "/scheduled",
+      isActive: location.pathname === "/scheduled",
     },
-    { 
-      icon: Cctv, 
-      label: 'Cameras Records', 
-      path: '/CamerasRecords',
-      isActive: location.pathname === '/CamerasRecords'
-    }
+    {
+      icon: Cctv,
+      label: "Cameras Records",
+      path: "/CamerasRecords",
+      isActive: location.pathname === "/CamerasRecords",
+    },
   ];
 
   const bottomNavItems = [
-    { 
-      icon: Settings, 
-      label: 'Settings', 
-      path: '/settings',
-      isActive: location.pathname === '/settings'
+    {
+      icon: Settings,
+      label: "Settings",
+      path: "/settings",
+      isActive: location.pathname === "/settings",
     },
-    { 
-      icon: HelpCircle, 
-      label: 'Support', 
-      path: '/support',
-      isActive: location.pathname === '/support'
-    }
+    {
+      icon: HelpCircle,
+      label: "Support",
+      path: "/support",
+      isActive: location.pathname === "/support",
+    },
   ];
 
   const handleRoomClick = (roomId) => {
-    if (location.pathname === '/dashboard') {
+    if (location.pathname === "/dashboard") {
       window.location.hash = `room-${roomId}`;
     } else {
       navigate(`/dashboard#room-${roomId}`);
@@ -74,16 +74,16 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
   };
 
   const signOut = () => {
-    localStorage.removeItem('authtoken');
+    localStorage.removeItem("authtoken");
     setIsAuthenticated(false);
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
     <>
       {/* Mobile Menu Button */}
       <button
-        className={`mobile-menu-button ${isNavOpen ? 'active' : ''}`}
+        className={`mobile-menu-button ${isNavOpen ? "active" : ""}`}
         onClick={() => setNavOpen(!isNavOpen)}
       >
         <Menu className="menu-icon" />
@@ -91,14 +91,11 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
 
       {/* Overlay for mobile */}
       {isNavOpen && (
-        <div 
-          className="mobile-overlay"
-          onClick={() => setNavOpen(false)}
-        />
+        <div className="mobile-overlay" onClick={() => setNavOpen(false)} />
       )}
 
       {/* Side Navigation */}
-      <nav className={`sidenav ${isNavOpen ? 'open' : ''}`}>
+      <nav className={`sidenav ${isNavOpen ? "open" : ""}`}>
         {/* Logo Section */}
         <div className="logo-section">
           <div className="logo" />
@@ -111,25 +108,25 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
           <div className="primary-nav">
             {!isAuthenticated ? (
               <>
-                <NavItem 
+                <NavItem
                   icon={LogIn}
                   label="Login"
                   path="/login"
-                  isActive={location.pathname === '/login'}
+                  isActive={location.pathname === "/login"}
                   onClick={() => setNavOpen(false)}
                 />
-                <NavItem 
+                <NavItem
                   icon={NotebookPen}
                   label="Register"
                   path="/register"
-                  isActive={location.pathname === '/register'}
+                  isActive={location.pathname === "/register"}
                   onClick={() => setNavOpen(false)}
                 />
               </>
             ) : (
               <>
                 {mainNavItems.map((item) => (
-                  <NavItem 
+                  <NavItem
                     key={item.label}
                     {...item}
                     onClick={() => setNavOpen(false)}
@@ -143,7 +140,7 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
                     <button
                       key={roomId}
                       onClick={() => handleRoomClick(roomId)}
-                      className={`room-button ${location.hash === `#room-${roomId}` ? 'active' : ''}`}
+                      className={`room-button ${location.hash === `#room-${roomId}` ? "active" : ""}`}
                     >
                       <ChevronRight className="chevron-icon" />
                       <span>{room.name}</span>
@@ -158,18 +155,15 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
           {isAuthenticated && (
             <div className="bottom-nav">
               {bottomNavItems.map((item) => (
-                <NavItem 
+                <NavItem
                   key={item.label}
                   {...item}
                   onClick={() => setNavOpen(false)}
                 />
               ))}
-              
+
               {/* Sign Out Button */}
-              <button
-                onClick={signOut}
-                className="sign-out-button"
-              >
+              <button onClick={signOut} className="sign-out-button">
                 <LogOut className="signout-icon" />
                 <span>Sign Out</span>
               </button>
@@ -186,7 +180,7 @@ const NavItem = ({ icon: Icon, label, path, isActive, onClick }) => (
   <Link
     to={path}
     onClick={onClick}
-    className={`nav-item ${isActive ? 'active' : ''}`}
+    className={`nav-item ${isActive ? "active" : ""}`}
   >
     <Icon className="nav-icon" />
     <span>{label}</span>

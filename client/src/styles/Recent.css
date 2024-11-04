@@ -1,0 +1,127 @@
+.activities-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.test-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.test-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.test-button:hover {
+  opacity: 0.9;
+}
+
+.light-button {
+  background-color: #2196f3;
+}
+
+.lock-button {
+  background-color: #4caf50;
+}
+
+.activities-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.activities-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.activities-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: #f5f5f5;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.activities-content {
+  padding: 20px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.activity-item:hover {
+  background-color: #f5f5f5;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.25rem;
+}
+
+.activity-details {
+  flex: 1;
+}
+
+.activity-device {
+  margin: 0;
+  font-weight: 500;
+}
+
+.activity-action {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.activity-time {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.show-more-button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 16px;
+  border: none;
+  background: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.show-more-button:hover {
+  color: #333;
+}

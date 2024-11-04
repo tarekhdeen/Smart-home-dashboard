@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import axios from 'axios';
-import io from 'socket.io-client';
-import Register from './components/Register';
-import Login from './components/Login';
-import SideNav from './components/SideNav';
-import Dashboard from './components/Dashboard';
-import CamerasRecords from './components/CamerasRecords';
-import './styles/AppStyles.css';
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import axios from "axios";
+import io from "socket.io-client";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import SideNav from "./components/SideNav";
+import Dashboard from "./components/Dashboard";
+import Recent from "./components/Recent";
+import CamerasRecords from "./components/CamerasRecords";
+import "./styles/AppStyles.css";
 
 function App() {
   const [devices, setDevices] = useState({});
@@ -24,9 +25,10 @@ function App() {
   }, [isAuthenticated]);
 
   const fetchDevices = () => {
-    axios.get('http://localhost:3000/api/devices')
-      .then(response => {
-        console.log('Initial devices:', response.data);
+    axios
+      .get("http://localhost:3000/api/devices")
+      .then((response) => {
+        console.log("Initial devices:", response.data);
         const devicesObj = response.data.reduce((acc, device) => {
           acc[device.id] = device;
           return acc;
@@ -34,7 +36,7 @@ function App() {
         setDevices(devicesObj);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error fetching devices:", err);
         setError("Failed to fetch devices");
         setLoading(false);
@@ -42,16 +44,18 @@ function App() {
   };
 
   const setupWebSocket = () => {
-    const socket = io('http://localhost:3000');
-    
-    socket.on('connect', () => console.log('Socket connected'));
-    socket.on('connect_error', (err) => console.log('Socket connection error:', err));
-    
-    socket.on('deviceUpdate', (updatedDevice) => {
-      console.log('Device update received:', updatedDevice);
-      setDevices(prevDevices => ({
+    const socket = io("http://localhost:3000");
+
+    socket.on("connect", () => console.log("Socket connected"));
+    socket.on("connect_error", (err) =>
+      console.log("Socket connection error:", err)
+    );
+
+    socket.on("deviceUpdate", (updatedDevice) => {
+      console.log("Device update received:", updatedDevice);
+      setDevices((prevDevices) => ({
         ...prevDevices,
-        [updatedDevice.id]: updatedDevice
+        [updatedDevice.id]: updatedDevice,
       }));
     });
 
@@ -59,31 +63,34 @@ function App() {
   };
 
   const toggleDevice = (id) => {
-    console.log('Toggling device:', id);
-    axios.post(`http://localhost:3000/api/devices/${id}/toggle`)
-      .then(response => {
-        console.log('Toggle response:', response.data);
-        setDevices(prevDevices => ({
+    console.log("Toggling device:", id);
+    axios
+      .post(`http://localhost:3000/api/devices/${id}/toggle`)
+      .then((response) => {
+        console.log("Toggle response:", response.data);
+        setDevices((prevDevices) => ({
           ...prevDevices,
-          [id]: response.data
+          [id]: response.data,
         }));
       })
-      .catch(err => console.error("Error toggling device:", err));
+      .catch((err) => console.error("Error toggling device:", err));
   };
 
   return (
     <div className="app-container">
-      <SideNav isAuthenticated={isAuthenticated}
-        setIsAuthenticated={setIsAuthenticated} />
+      <SideNav
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+      />
       <div className="main-content">
         <Routes>
-          <Route 
-            path="/register" 
-            element={<Register onRegister={() => setIsAuthenticated(true)} />} 
+          <Route
+            path="/register"
+            element={<Register onRegister={() => setIsAuthenticated(true)} />}
           />
-          <Route 
-            path="/login" 
-            element={<Login onLogin={() => setIsAuthenticated(true)} />} 
+          <Route
+            path="/login"
+            element={<Login onLogin={() => setIsAuthenticated(true)} />}
           />
           <Route
             path="/dashboard"
@@ -102,11 +109,10 @@ function App() {
             }
           />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/CamerasRecords"
-          element={<CamerasRecords
-            devices={devices}
-            onToggle={toggleDevice} />
-          }
+          <Route path="/Recent" element={<Recent />} />
+          <Route
+            path="/CamerasRecords"
+            element={<CamerasRecords CamerasRecords />}
           />
         </Routes>
       </div>
@@ -114,4 +120,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;
