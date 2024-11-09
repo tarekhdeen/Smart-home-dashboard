@@ -12,6 +12,7 @@ import "./styles/AppStyles.css";
 
 function App() {
   const [devices, setDevices] = useState({});
+  const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,6 +20,7 @@ function App() {
   useEffect(() => {
     if (isAuthenticated) {
       fetchDevices();
+      fetchActivities();
       const cleanup = setupWebSocket();
       return cleanup;
     }
@@ -41,6 +43,16 @@ function App() {
         setError("Failed to fetch devices");
         setLoading(false);
       });
+  };
+
+  const fetchActivities = () => {
+    axios
+      .get("http://localhost:3000/api/activities")
+      .then((response) => {
+        console.log("Initial activities:", response.data);
+        setActivities(response.data);
+      })
+      .catch((err) => console.error("Error fetching activities:", err));
   };
 
   const setupWebSocket = () => {
@@ -109,7 +121,7 @@ function App() {
             }
           />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/Recent" element={<Recent />} />
+          <Route path="/Recent" element={<Recent activities={activities} />} />
           <Route
             path="/CamerasRecords"
             element={<CamerasRecords CamerasRecords />}

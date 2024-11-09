@@ -1,142 +1,98 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import io from "socket.io-client";
+import { Clock } from "lucide-react";
 import "../styles/Recent.css";
 
-const ACTIVITY_TYPES = {
-  LIGHT: {
-    icon: "💡",
-    color: "#FFA500",
-  },
-  LOCK: {
-    icon: "🔒",
-    color: "#4CAF50",
-  },
-  FAN: {
-    icon: "💨",
-    color: "#2196F3",
-  },
-  THERMOSTAT: {
-    icon: "🌡️",
-    color: "#FF5722",
-  },
-  DOOR: {
-    icon: "🚪",
-    color: "#9C27B0",
-  },
-};
+const RecentActivity = () => {
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-const INITIAL_ACTIVITIES = [
-  {
-    id: 1,
-    type: "LIGHT",
-    device: "Living Room Light",
-    action: "turned on",
-    timestamp: new Date(Date.now() - 5 * 60000).toISOString(),
-    status: "success",
-  },
-  {
-    id: 2,
-    type: "LOCK",
-    device: "Front Door",
-    action: "locked",
-    timestamp: new Date(Date.now() - 15 * 60000).toISOString(),
-    status: "success",
-  },
-  {
-    id: 3,
-    type: "THERMOSTAT",
-    device: "Living Room Thermostat",
-    action: "temperature set to 72°F",
-    timestamp: new Date(Date.now() - 30 * 60000).toISOString(),
-    status: "success",
-  },
-];
+  useEffect(() => {
+    fetchActivities();
+    setupWebSocket();
+  }, []);
 
-const RecentActivities = () => {
-  const [activities, setActivities] = useState(INITIAL_ACTIVITIES);
-  const [showAll, setShowAll] = useState(false);
-
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffMinutes = Math.floor((now - date) / 60000);
-
-    if (diffMinutes < 1) return "Just now";
-    if (diffMinutes < 60) return `${diffMinutes}m ago`;
-    if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)}h ago`;
-    return date.toLocaleDateString();
+  const fetchActivities = () => {
+    axios
+      .get("http://localhost:3000/api/activities")
+      .then((response) => {
+        console.log("Activities:", response.data);
+        setActivities(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching activities:", err);
+        setError("Failed to fetch activities");
+        setLoading(false);
+      });
   };
 
-  const addNewActivity = (type, device, action) => {
-    const newActivity = {
-      id: Date.now(),
-      type,
-      device,
-      action,
-      timestamp: new Date().toISOString(),
-      status: "success",
-    };
-    setActivities([newActivity, ...activities]);
-  };
+  const setupWebSocket = () => {
+    const socket = io("http://localhost:3000");
 
-  const displayedActivities = showAll ? activities : activities.slice(0, 5);
+    socket.on("connect", () => console.log("Socket connected"));
+    socket.on("connect_error", (err) =>
+      console.log("Socket connection error:", err)
+    );
+
+    socket.on("deviceUpdate", (updatedDevice) => {
+      console.log("Device update received:", updatedDevice);
+      // Update the activities state with the new device activity
+      setActivities((prevActivities) => {
+        const newActivities = [...prevActivities];
+        const index = newActivities.findIndex(
+          (activity) => activity.device === updatedDevice.id
+        );
+        if (index !== -1) {
+          newActivities[index] = {
+            ...newActivities[index],
+            action: updatedDevice.action,
+            timestamp: updatedDevice.timestamp,
+          };
+        } else {
+          newActivities.push({
+            type: updatedDevice.type,
+            device: updatedDevice.id,
+            action: updatedDevice.action,
+            timestamp: updatedDevice.timestamp,
+          });
+        }
+        return newActivities;
+      });
+    });
+  };
 
   return (
-    <div className="activities-container">
-      {/* Test buttons */}
-      <div className="test-buttons">
-        <button
-          onClick={() => addNewActivity("LIGHT", "Kitchen Light", "turned on")}
-          className="test-button light-button"
-        >
-          Test Light Action
-        </button>
-        <button
-          onClick={() => addNewActivity("LOCK", "Front Door", "locked")}
-          className="test-button lock-button"
-        >
-          Test Lock Action
-        </button>
+    <div className="recent-activity">
+      <div className="recent-activity-header">
+        <Clock className="header-icon" />
+        <h1>Recent Activity</h1>
       </div>
 
-      <div className="activities-card">
-        <div className="activities-header">
-          <h3 className="activities-title">Recent Activities</h3>
-          <span className="live-badge">⚪ Live</span>
+      {loading ? (
+        <div className="loading-state">
+          <p>Loading...</p>
         </div>
-
-        <div className="activities-content">
-          {displayedActivities.map((activity) => (
-            <div key={activity.id} className="activity-item">
-              <div
-                className="activity-icon"
-                style={{
-                  backgroundColor: `${ACTIVITY_TYPES[activity.type].color}20`,
-                }}
-              >
-                <span>{ACTIVITY_TYPES[activity.type].icon}</span>
+      ) : (
+        <ul className="activity-list">
+          {activities.map((activity, index) => (
+            <li key={activity._id || index} className="activity-item">
+              <div className="activity-content">
+                <span className="activity-type">{activity.type}</span>
+                <span className="activity-device">{activity.device}</span>
+                <span className="activity-action">{activity.action}</span>
+                <span className="activity-timestamp">{activity.timestamp}</span>
               </div>
-              <div className="activity-details">
-                <p className="activity-device">{activity.device}</p>
-                <p className="activity-action">{activity.action}</p>
-              </div>
-              <div className="activity-time">
-                {formatTimestamp(activity.timestamp)}
-              </div>
-            </div>
+            </li>
           ))}
+        </ul>
+      )}
 
-          {activities.length > 5 && (
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="show-more-button"
-            >
-              {showAll ? "Show Less ↑" : "Show More ↓"}
-            </button>
-          )}
-        </div>
-      </div>
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };
 
-export default RecentActivities;
+export default RecentActivity;
