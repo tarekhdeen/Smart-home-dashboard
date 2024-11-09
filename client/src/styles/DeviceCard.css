@@ -60,7 +60,7 @@
 .blind-button.closed,
 .lock-button.locked,
 .camera-button.start-recording {
-  background-color: #b7babe;
+  background-color: #cbd4df;
   color: #333;
 }
 
@@ -73,7 +73,7 @@
 .temperature-value {
   font-size: 24px;
   font-weight: bold;
-  color: #4caf50;
+  color: #8de290;
 }
 
 /* Media Queries */

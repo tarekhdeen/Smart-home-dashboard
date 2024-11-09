@@ -9,6 +9,7 @@ import Dashboard from "./components/Dashboard";
 import Recent from "./pages/Recent";
 import CamerasRecords from "./pages/CamerasRecords";
 import Scheduled from "./pages/Scheduled";
+import Settings from "./pages/Settings";
 import "./styles/AppStyles.css";
 
 function App() {
@@ -128,6 +129,7 @@ function App() {
             element={<CamerasRecords CamerasRecords />}
           />
           <Route path="/scheduled" element={<Scheduled />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </div>
