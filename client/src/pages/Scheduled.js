@@ -180,7 +180,7 @@ const DeviceScheduling = () => {
       </div>
 
       <div className="form-actions">
-        <button className="button button-outline" onClick={onCancel}>
+        <button className="button button-outlineS" onClick={onCancel}>
           <X className="icon-small" />
           Cancel
         </button>

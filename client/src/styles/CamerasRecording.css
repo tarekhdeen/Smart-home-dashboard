@@ -63,12 +63,12 @@
   color: #9ca3af;
 }
 
-.button-group {
+.RButton-group {
   display: flex;
   gap: 0.5rem;
 }
 
-.button {
+.RButton {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
@@ -79,35 +79,35 @@
   transition: background-color 0.2s;
 }
 
-.button-blue {
+.RButton-blue {
   background-color: #2563eb;
   color: white;
 }
 
-.button-blue:hover {
+.RButton-blue:hover {
   background-color: #1d4ed8;
 }
 
-.button-red {
+.RButton-red {
   background-color: #dc2626;
   color: white;
 }
 
-.button-red:hover {
+.RButton-red:hover {
   background-color: #b91c1c;
 }
 
-.button-outline {
+.RButton-outline {
   background-color: white;
   border: 1px solid #d1d5db;
   color: #374151;
 }
 
-.button-outline:hover {
+.RButton-outline:hover {
   background-color: #f9fafb;
 }
 
-.button-icon {
+.RButton-icon {
   padding: 0.5rem;
   border: 1px solid #d1d5db;
 }
@@ -218,7 +218,7 @@
   margin-bottom: 0.5rem;
 }
 
-.playback-buttons {
+.playback-RButtons {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
@@ -229,7 +229,7 @@
   gap: 0.5rem;
 }
 
-.button-icon {
+.RButton-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -239,7 +239,7 @@
   border-radius: 0.375rem;
 }
 
-.button-icon .icon-small {
+.RButton-icon .icon-small {
   margin: 0;
 }
 
@@ -269,12 +269,12 @@
   color: #6b7280;
 }
 
-/* Add hover effects for buttons */
-.button-icon:hover {
+/* Add hover effects for RButtons */
+.RButton-icon:hover {
   background-color: #f3f4f6;
 }
 
-.button-icon.button-red:hover {
+.RButton-icon.RButton-red:hover {
   background-color: #ef4444;
 }
 

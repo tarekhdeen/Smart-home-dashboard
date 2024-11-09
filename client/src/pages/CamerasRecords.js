@@ -113,10 +113,10 @@ const CameraRecords = () => {
             <div className="camera-preview">
               <Video className="preview-icon" />
             </div>
-            <div className="button-group">
+            <div className="RButton-group">
               <button
                 onClick={() => toggleRecording(1)}
-                className={`button ${isRecording1 ? "button-red" : "button-blue"}`}
+                className={`RButton ${isRecording1 ? "RButton-red" : "RButton-blue"}`}
               >
                 {isRecording1 ? (
                   <>
@@ -144,10 +144,10 @@ const CameraRecords = () => {
             <div className="camera-preview">
               <Video className="preview-icon" />
             </div>
-            <div className="button-group">
+            <div className="RButton-group">
               <button
                 onClick={() => toggleRecording(2)}
-                className={`button ${isRecording2 ? "button-red" : "button-blue"}`}
+                className={`RButton ${isRecording2 ? "RButton-red" : "RButton-blue"}`}
               >
                 {isRecording2 ? (
                   <>
@@ -171,7 +171,7 @@ const CameraRecords = () => {
         </div>
         <div className="card-content">
           <button
-            className="button button-outline"
+            className="RButton RButton-outline"
             onClick={() => setShowRecordingsList(!showRecordingsList)}
           >
             <List className="icon-small" />
@@ -218,28 +218,28 @@ const CameraRecords = () => {
                     </div>
                     <div className="recording-actions">
                       <button
-                        className="button button-icon"
+                        className="RButton RButton-icon"
                         onClick={() => playRecording(recording)}
                         title="Play"
                       >
                         <Play className="icon-small" />
                       </button>
                       <button
-                        className="button button-icon"
+                        className="RButton RButton-icon"
                         onClick={() => startEditing(recording.id)}
                         title="Rename"
                       >
                         <Edit2 className="icon-small" />
                       </button>
                       <button
-                        className="button button-icon"
+                        className="RButton RButton-icon"
                         onClick={() => handleDownload(recording)}
                         title="Download"
                       >
                         <Download className="icon-small" />
                       </button>
                       <button
-                        className="button button-icon button-red"
+                        className="RButton RButton-icon RButton-red"
                         onClick={() => deleteRecording(recording.id)}
                         title="Delete"
                       >
@@ -274,12 +274,12 @@ const CameraRecords = () => {
               <div className="time-display">
                 {formatTime(currentTime)} / {selectedRecording.duration}
               </div>
-              <div className="playback-buttons">
-                <button className="button button-icon" title="Previous 10s">
+              <div className="playback-RButtons">
+                <button className="RButton RButton-icon" title="Previous 10s">
                   <SkipBack className="icon-small" />
                 </button>
                 <button
-                  className="button button-icon"
+                  className="RButton RButton-icon"
                   onClick={() => setIsPlaying(!isPlaying)}
                   title={isPlaying ? "Pause" : "Play"}
                 >
@@ -289,7 +289,7 @@ const CameraRecords = () => {
                     <Play className="icon-small" />
                   )}
                 </button>
-                <button className="button button-icon" title="Next 10s">
+                <button className="RButton RButton-icon" title="Next 10s">
                   <SkipForward className="icon-small" />
                 </button>
               </div>

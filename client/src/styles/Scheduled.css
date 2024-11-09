@@ -52,11 +52,14 @@
   background-color: #1f2937;
   border-radius: 0.5rem;
   overflow: hidden;
-  transition: opacity 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
 }
 
 .schedule-card.inactive {
   opacity: 0.6;
+  transform: scale(0.98);
 }
 
 .schedule-info {
@@ -215,13 +218,13 @@
   background-color: #1d4ed8;
 }
 
-.button-outline {
+.button-outlineS {
   background-color: transparent;
   border: 1px solid #374151;
   color: #e5e7eb;
 }
 
-.button-outline:hover {
+.button-outlineS:hover {
   background-color: #374151;
 }
 
@@ -256,4 +259,37 @@
 .icon-small {
   width: 1rem;
   height: 1rem;
+}
+
+/* Tooltip styles */
+[title] {
+  position: relative;
+}
+
+[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1f2937;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+[title]:hover::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #1f2937 transparent;
+  z-index: 10;
 }
