@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 import SideNav from "./components/SideNav";
 import Dashboard from "./components/Dashboard";
-import Recent from "./components/Recent";
-import CamerasRecords from "./components/CamerasRecords";
+import Recent from "./pages/Recent";
+import CamerasRecords from "./pages/CamerasRecords";
+import Scheduled from "./pages/Scheduled";
 import "./styles/AppStyles.css";
 
 function App() {
@@ -126,6 +127,7 @@ function App() {
             path="/CamerasRecords"
             element={<CamerasRecords CamerasRecords />}
           />
+          <Route path="/scheduled" element={<Scheduled />} />
         </Routes>
       </div>
     </div>
