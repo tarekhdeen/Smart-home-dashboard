@@ -9,34 +9,55 @@ import {
   Power,
   Save,
   X,
+  Home,
 } from "lucide-react";
+import rooms from "../data/rooms";
+import devices from "../data/devices";
 import "../styles/Scheduled.css";
+
+// const devices = {
+//   doorLock1: { id: "doorLock1", name: "Front Door Lock", type: "lock" },
+//   doorLock2: { id: "doorLock2", name: "Garage Door Lock", type: "lock" },
+//   camera1: { id: "camera1", name: "Front Door Camera", type: "camera" },
+//   camera2: { id: "camera2", name: "Garage Camera", type: "camera" },
+//   light1: { id: "light1", name: "Living Room Light", type: "light" },
+//   light2: { id: "light2", name: "Kitchen Light", type: "light" },
+//   light3: { id: "light3", name: "Bedroom Light", type: "light" },
+//   light4: { id: "light4", name: "Bathroom Light", type: "light" },
+//   thermostat1: {
+//     id: "thermostat1",
+//     name: "Living Room Thermostat",
+//     type: "climate",
+//   },
+//   thermostat2: {
+//     id: "thermostat2",
+//     name: "Bedroom Thermostat",
+//     type: "climate",
+//   },
+//   blind1: { id: "blind1", name: "Living Room Blinds", type: "blind" },
+//   blind2: { id: "blind2", name: "Bedroom Blinds", type: "blind" },
+// };
 
 const DeviceScheduling = () => {
   const [schedules, setSchedules] = useState([
     {
       id: 1,
-      deviceName: "Living Room Lights",
+      roomId: "living_room",
+      deviceId: "light1",
       action: "turn_on",
       time: "07:00",
       days: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-      active: true,
-    },
-    {
-      id: 2,
-      deviceName: "Air Conditioner",
-      action: "turn_off",
-      time: "22:00",
-      days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
       active: true,
     },
   ]);
 
   const [isAddingSchedule, setIsAddingSchedule] = useState(false);
   const [editingSchedule, setEditingSchedule] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState("");
 
   const [newSchedule, setNewSchedule] = useState({
-    deviceName: "",
+    roomId: "",
+    deviceId: "",
     action: "turn_on",
     time: "",
     days: [],
@@ -44,17 +65,35 @@ const DeviceScheduling = () => {
   });
 
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const devices = [
-    "Living Room Lights",
-    "Bedroom Lights",
-    "Air Conditioner",
-    "Smart TV",
-    "Coffee Maker",
-  ];
+
+  const getDeviceName = (roomId, deviceId) => {
+    return devices[deviceId]?.name || "";
+  };
+
+  const getRoomName = (roomId) => {
+    return rooms[roomId]?.name || "";
+  };
+
+  const getAvailableDevices = (roomId) => {
+    if (!roomId) return [];
+    const deviceIds = rooms[roomId]?.deviceIds || [];
+    return deviceIds.map((id) => devices[id]);
+  };
+
+  const getDeviceActions = (deviceType) => {
+    const actionsByType = {
+      light: ["turn_on", "turn_off"],
+      doorLock: ["lock", "unlock"],
+      blind: ["Open_Blinds", "Close_Blinds"],
+      camera: ["start_recording", "stop_recording"],
+    };
+    return actionsByType[deviceType] || ["turn_on", "turn_off"];
+  };
 
   const handleAddSchedule = () => {
     if (
-      newSchedule.deviceName &&
+      newSchedule.roomId &&
+      newSchedule.deviceId &&
       newSchedule.time &&
       newSchedule.days.length > 0
     ) {
@@ -66,13 +105,15 @@ const DeviceScheduling = () => {
         },
       ]);
       setNewSchedule({
-        deviceName: "",
+        roomId: "",
+        deviceId: "",
         action: "turn_on",
         time: "",
         days: [],
         active: true,
       });
       setIsAddingSchedule(false);
+      setSelectedRoom("");
     }
   };
 
@@ -93,6 +134,7 @@ const DeviceScheduling = () => {
   const handleEditSchedule = (schedule) => {
     setEditingSchedule(schedule);
     setNewSchedule(schedule);
+    setSelectedRoom(schedule.roomId);
   };
 
   const handleUpdateSchedule = () => {
@@ -103,12 +145,14 @@ const DeviceScheduling = () => {
     );
     setEditingSchedule(null);
     setNewSchedule({
-      deviceName: "",
+      roomId: "",
+      deviceId: "",
       action: "turn_on",
       time: "",
       days: [],
       active: true,
     });
+    setSelectedRoom("");
   };
 
   const toggleDay = (day) => {
@@ -120,81 +164,131 @@ const DeviceScheduling = () => {
     }));
   };
 
-  const ScheduleForm = ({ onSubmit, onCancel }) => (
-    <div className="schedule-form">
-      <div className="form-group">
-        <label>Device</label>
-        <select
-          value={newSchedule.deviceName}
-          onChange={(e) =>
-            setNewSchedule({ ...newSchedule, deviceName: e.target.value })
-          }
-        >
-          <option value="">Select Device</option>
-          {devices.map((device) => (
-            <option key={device} value={device}>
-              {device}
-            </option>
-          ))}
-        </select>
-      </div>
+  const ScheduleForm = ({ onSubmit, onCancel }) => {
+    const availableDevices = getAvailableDevices(selectedRoom);
+    const deviceType = devices[newSchedule.deviceId]?.type;
+    const availableActions = deviceType ? getDeviceActions(deviceType) : [];
 
-      <div className="form-group">
-        <label>Action</label>
-        <select
-          value={newSchedule.action}
-          onChange={(e) =>
-            setNewSchedule({ ...newSchedule, action: e.target.value })
-          }
-        >
-          <option value="turn_on">Turn On</option>
-          <option value="turn_off">Turn Off</option>
-        </select>
-      </div>
+    ScheduleForm.propTypes = {
+      onSubmit: PropTypes.func.isRequired,
+      onCancel: PropTypes.func.isRequired,
+    };
 
-      <div className="form-group">
-        <label>Time</label>
-        <input
-          type="time"
-          value={newSchedule.time}
-          onChange={(e) =>
-            setNewSchedule({ ...newSchedule, time: e.target.value })
-          }
-        />
-      </div>
+    return (
+      <div className="schedule-form">
+        <div className="form-group">
+          <label>Room</label>
+          <select
+            value={newSchedule.roomId}
+            onChange={(e) => {
+              const roomId = e.target.value;
+              setSelectedRoom(roomId);
+              setNewSchedule({
+                ...newSchedule,
+                roomId: roomId,
+                deviceId: "",
+              });
+            }}
+          >
+            <option value="">Select Room</option>
+            {Object.values(rooms).map((room) => (
+              <option key={room.id} value={room.id}>
+                {room.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="form-group">
-        <label>Repeat</label>
-        <div className="days-selector">
-          {daysOfWeek.map((day) => (
-            <button
-              key={day}
-              className={`day-SCbutton ${newSchedule.days.includes(day) ? "selected" : ""}`}
-              onClick={() => toggleDay(day)}
-              type="SCbutton"
-            >
-              {day}
-            </button>
-          ))}
+        <div className="form-group">
+          <label>Device</label>
+          <select
+            value={newSchedule.deviceId}
+            onChange={(e) =>
+              setNewSchedule({
+                ...newSchedule,
+                deviceId: e.target.value,
+                action: "", // Reset action when device changes
+              })
+            }
+            disabled={!selectedRoom}
+          >
+            <option value="">Select Device</option>
+            {availableDevices.map((device) => (
+              <option key={device.id} value={device.id}>
+                {device.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Action</label>
+          <select
+            value={newSchedule.action}
+            onChange={(e) =>
+              setNewSchedule({ ...newSchedule, action: e.target.value })
+            }
+            disabled={!newSchedule.deviceId}
+          >
+            <option value="">Select Action</option>
+            {availableActions.map((action) => (
+              <option key={action} value={action}>
+                {action.replace("_", " ").charAt(0).toUpperCase() +
+                  action.slice(1).replace("_", " ")}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Time</label>
+          <input
+            type="time"
+            value={newSchedule.time}
+            onChange={(e) =>
+              setNewSchedule({ ...newSchedule, time: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Repeat</label>
+          <div className="days-selector">
+            {daysOfWeek.map((day) => (
+              <button
+                key={day}
+                className={`day-SCbutton ${newSchedule.days.includes(day) ? "selected" : ""}`}
+                onClick={() => toggleDay(day)}
+                type="button"
+              >
+                {day}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="form-actions">
+          <button className="SCbutton SCbutton-outline" onClick={onCancel}>
+            <X className="SCicon-small" />
+            Cancel
+          </button>
+          <button
+            className="SCbutton SCbutton-blue"
+            onClick={onSubmit}
+            disabled={
+              !newSchedule.roomId ||
+              !newSchedule.deviceId ||
+              !newSchedule.action ||
+              !newSchedule.time ||
+              newSchedule.days.length === 0
+            }
+          >
+            <Save className="SCicon-small" />
+            {editingSchedule ? "Update" : "Save"} Schedule
+          </button>
         </div>
       </div>
-
-      <div className="form-actions">
-        <button className="SCbutton SCbutton-outline" onClick={onCancel}>
-          <X className="SCicon-small" />
-          Cancel
-        </button>
-        <button className="SCbutton SCbutton-blue" onClick={onSubmit}>
-          <Save className="SCicon-small" />
-          {editingSchedule ? "Update" : "Save"} Schedule
-        </button>
-      </div>
-    </div>
-  );
-
-  ScheduleForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    );
   };
 
   return (
@@ -229,12 +323,14 @@ const DeviceScheduling = () => {
                 setIsAddingSchedule(false);
                 setEditingSchedule(null);
                 setNewSchedule({
-                  deviceName: "",
+                  roomId: "",
+                  deviceId: "",
                   action: "turn_on",
                   time: "",
                   days: [],
                   active: true,
                 });
+                setSelectedRoom("");
               }}
             />
           </div>
@@ -248,7 +344,15 @@ const DeviceScheduling = () => {
             >
               <div className="schedule-info">
                 <div className="schedule-header">
-                  <h3 className="schedule-device">{schedule.deviceName}</h3>
+                  <div>
+                    <div className="schedule-room">
+                      <Home className="SCicon-small" />
+                      {getRoomName(schedule.roomId)}
+                    </div>
+                    <h3 className="schedule-device">
+                      {getDeviceName(schedule.roomId, schedule.deviceId)}
+                    </h3>
+                  </div>
                   <div className="schedule-actions">
                     <button
                       className={`SCbutton-icon ${schedule.active ? "SCbutton-blue" : "SCbutton-outline"}`}
@@ -279,7 +383,8 @@ const DeviceScheduling = () => {
                     {schedule.time}
                   </div>
                   <div className="schedule-action">
-                    {schedule.action === "turn_on" ? "Turn On" : "Turn Off"}
+                    {schedule.action.replace("_", " ").charAt(0).toUpperCase() +
+                      schedule.action.slice(1).replace("_", " ")}
                   </div>
                 </div>
                 <div className="schedule-days">

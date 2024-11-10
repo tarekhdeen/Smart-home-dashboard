@@ -66,6 +66,16 @@
   padding: 1rem;
 }
 
+.schedule-room {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 .schedule-header {
   display: flex;
   justify-content: space-between;
