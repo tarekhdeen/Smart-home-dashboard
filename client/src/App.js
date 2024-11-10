@@ -10,6 +10,7 @@ import Recent from "./pages/Recent";
 import CamerasRecords from "./pages/CamerasRecords";
 import Scheduled from "./pages/Scheduled";
 import Settings from "./pages/Settings";
+import Support from "./pages/Support";
 import "./styles/AppStyles.css";
 
 function App() {
@@ -18,15 +19,24 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setIsAuthenticated(true);
       fetchDevices();
       fetchActivities();
       const cleanup = setupWebSocket();
+      setIsLoading(false);
       return cleanup;
+    } else {
+      setIsAuthenticated(false);
+      delete axios.defaults.headers.common["Authorization"];
+      setIsLoading(false);
     }
-  }, [isAuthenticated]);
+  }, []);
 
   const fetchDevices = () => {
     axios
@@ -90,21 +100,41 @@ function App() {
       .catch((err) => console.error("Error toggling device:", err));
   };
 
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="app-container">
       <SideNav
         isAuthenticated={isAuthenticated}
-        setIsAuthenticated={setIsAuthenticated}
+        setIsAuthenticated={(value) => {
+          setIsAuthenticated(value);
+          if (!value) {
+            localStorage.removeItem("token");
+            delete axios.defaults.headers.common["Authorization"];
+          }
+        }}
       />
       <div className="main-content">
         <Routes>
           <Route
             path="/register"
-            element={<Register onRegister={() => setIsAuthenticated(true)} />}
+            element={
+              isAuthenticated ? (
+                <Navigate to={window.location.pathname} replace />
+              ) : (
+                <Register onRegister={() => setIsAuthenticated(true)} />
+              )
+            }
           />
           <Route
             path="/login"
-            element={<Login onLogin={() => setIsAuthenticated(true)} />}
+            element={
+              isAuthenticated ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Login onLogin={() => setIsAuthenticated(true)} />
+              )
+            }
           />
           <Route
             path="/dashboard"
@@ -123,13 +153,76 @@ function App() {
             }
           />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/Recent" element={<Recent activities={activities} />} />
+          <Route
+            path="/Recent"
+            element={
+              isAuthenticated ? (
+                <Recent activities={activities} />
+              ) : (
+                <Navigate
+                  to="/login"
+                  state={{ from: window.location.pathname }}
+                  replace
+                />
+              )
+            }
+          />
           <Route
             path="/CamerasRecords"
-            element={<CamerasRecords CamerasRecords />}
+            element={
+              isAuthenticated ? (
+                <CamerasRecords />
+              ) : (
+                <Navigate
+                  to="/login"
+                  state={{ from: window.location.pathname }}
+                  replace
+                />
+              )
+            }
           />
-          <Route path="/scheduled" element={<Scheduled />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/scheduled"
+            element={
+              isAuthenticated ? (
+                <Scheduled />
+              ) : (
+                <Navigate
+                  to="/login"
+                  state={{ from: window.location.pathname }}
+                  replace
+                />
+              )
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              isAuthenticated ? (
+                <Settings />
+              ) : (
+                <Navigate
+                  to="/login"
+                  state={{ from: window.location.pathname }}
+                  replace
+                />
+              )
+            }
+          />
+          <Route
+            path="/support"
+            element={
+              isAuthenticated ? (
+                <Support />
+              ) : (
+                <Navigate
+                  to="/login"
+                  state={{ from: window.location.pathname }}
+                  replace
+                />
+              )
+            }
+          />
         </Routes>
       </div>
     </div>

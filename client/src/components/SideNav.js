@@ -165,7 +165,7 @@ const SideNav = ({ isAuthenticated, setIsAuthenticated }) => {
               {/* Sign Out Button */}
               <button onClick={signOut} className="sign-out-button">
                 <LogOut className="signout-icon" />
-                <span>Sign Out</span>
+                <span>Logout</span>
               </button>
             </div>
           )}

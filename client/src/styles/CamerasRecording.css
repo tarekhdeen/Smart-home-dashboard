@@ -117,7 +117,7 @@
   height: 1.25rem;
 }
 
-.icon-small {
+.Ricon-small {
   width: 1rem;
   height: 1rem;
   margin-right: 0.5rem;
@@ -239,7 +239,7 @@
   border-radius: 0.375rem;
 }
 
-.RButton-icon .icon-small {
+.RButton-icon .Ricon-small {
   margin: 0;
 }
 

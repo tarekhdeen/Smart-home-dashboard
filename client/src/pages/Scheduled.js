@@ -169,9 +169,9 @@ const DeviceScheduling = () => {
           {daysOfWeek.map((day) => (
             <button
               key={day}
-              className={`day-button ${newSchedule.days.includes(day) ? "selected" : ""}`}
+              className={`day-SCbutton ${newSchedule.days.includes(day) ? "selected" : ""}`}
               onClick={() => toggleDay(day)}
-              type="button"
+              type="SCbutton"
             >
               {day}
             </button>
@@ -180,12 +180,12 @@ const DeviceScheduling = () => {
       </div>
 
       <div className="form-actions">
-        <button className="button button-outlineS" onClick={onCancel}>
-          <X className="icon-small" />
+        <button className="SCbutton SCbutton-outline" onClick={onCancel}>
+          <X className="SCicon-small" />
           Cancel
         </button>
-        <button className="button button-blue" onClick={onSubmit}>
-          <Save className="icon-small" />
+        <button className="SCbutton SCbutton-blue" onClick={onSubmit}>
+          <Save className="SCicon-small" />
           {editingSchedule ? "Update" : "Save"} Schedule
         </button>
       </div>
@@ -207,10 +207,10 @@ const DeviceScheduling = () => {
           </div>
           {!isAddingSchedule && !editingSchedule && (
             <button
-              className="button button-blue"
+              className="SCbutton SCbutton-blue"
               onClick={() => setIsAddingSchedule(true)}
             >
-              <Plus className="icon-small" />
+              <Plus className="SCicon-small" />
               Add Schedule
             </button>
           )}
@@ -251,31 +251,31 @@ const DeviceScheduling = () => {
                   <h3 className="schedule-device">{schedule.deviceName}</h3>
                   <div className="schedule-actions">
                     <button
-                      className={`button-icon ${schedule.active ? "button-blue" : "button-outline"}`}
+                      className={`SCbutton-icon ${schedule.active ? "SCbutton-blue" : "SCbutton-outline"}`}
                       onClick={() => handleToggleSchedule(schedule.id)}
                       title={schedule.active ? "Disable" : "Enable"}
                     >
-                      <Power className="icon-small" />
+                      <Power className="SCicon-small" />
                     </button>
                     <button
-                      className="button-icon button-outline"
+                      className="SCbutton-icon SCbutton-outline"
                       onClick={() => handleEditSchedule(schedule)}
                       title="Edit"
                     >
-                      <Edit2 className="icon-small" />
+                      <Edit2 className="SCicon-small" />
                     </button>
                     <button
-                      className="button-icon button-red"
+                      className="SCbutton-icon button-red"
                       onClick={() => handleDeleteSchedule(schedule.id)}
                       title="Delete"
                     >
-                      <Trash2 className="icon-small" />
+                      <Trash2 className="SCicon-small" />
                     </button>
                   </div>
                 </div>
                 <div className="schedule-details">
                   <div className="schedule-time">
-                    <Clock className="icon-small" />
+                    <Clock className="SCicon-small" />
                     {schedule.time}
                   </div>
                   <div className="schedule-action">

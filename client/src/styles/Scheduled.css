@@ -173,7 +173,7 @@
   flex-wrap: wrap;
 }
 
-.day-button {
+.day-SCbutton {
   padding: 0.5rem;
   border: 1px solid #374151;
   background-color: #111827;
@@ -183,7 +183,7 @@
   transition: all 0.2s;
 }
 
-.day-button.selected {
+.day-SCbutton.selected {
   background-color: #2563eb;
   border-color: #2563eb;
   color: white;
@@ -196,8 +196,8 @@
   margin-top: 1rem;
 }
 
-/* Button Styles */
-.button {
+/* SCbutton Styles */
+.SCbutton {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -209,22 +209,22 @@
   transition: background-color 0.2s;
 }
 
-.button-blue {
+.SCbutton-blue {
   background-color: #2563eb;
   color: white;
 }
 
-.button-blue:hover {
+.SCbutton-blue:hover {
   background-color: #1d4ed8;
 }
 
-.button-outlineS {
+.SCbutton-outline {
   background-color: transparent;
   border: 1px solid #374151;
   color: #e5e7eb;
 }
 
-.button-outlineS:hover {
+.SCbutton-outline:hover {
   background-color: #374151;
 }
 
@@ -237,7 +237,7 @@
   background-color: #b91c1c;
 }
 
-.button-icon {
+.SCbutton-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -252,11 +252,11 @@
   transition: all 0.2s;
 }
 
-.button-icon:hover {
+.SCbutton-icon:hover {
   background-color: #374151;
 }
 
-.icon-small {
+.SCicon-small {
   width: 1rem;
   height: 1rem;
 }

@@ -120,11 +120,11 @@ const CameraRecords = () => {
               >
                 {isRecording1 ? (
                   <>
-                    <Square className="icon-small" /> Stop Recording
+                    <Square className="Ricon-small" /> Stop Recording
                   </>
                 ) : (
                   <>
-                    <Video className="icon-small" /> Start Recording
+                    <Video className="Ricon-small" /> Start Recording
                   </>
                 )}
               </button>
@@ -151,11 +151,11 @@ const CameraRecords = () => {
               >
                 {isRecording2 ? (
                   <>
-                    <Square className="icon-small" /> Stop Recording
+                    <Square className="Ricon-small" /> Stop Recording
                   </>
                 ) : (
                   <>
-                    <Video className="icon-small" /> Start Recording
+                    <Video className="Ricon-small" /> Start Recording
                   </>
                 )}
               </button>
@@ -174,7 +174,7 @@ const CameraRecords = () => {
             className="RButton RButton-outline"
             onClick={() => setShowRecordingsList(!showRecordingsList)}
           >
-            <List className="icon-small" />
+            <List className="Ricon-small" />
             Recordings List
           </button>
         </div>
@@ -222,28 +222,28 @@ const CameraRecords = () => {
                         onClick={() => playRecording(recording)}
                         title="Play"
                       >
-                        <Play className="icon-small" />
+                        <Play className="Ricon-small" />
                       </button>
                       <button
                         className="RButton RButton-icon"
                         onClick={() => startEditing(recording.id)}
                         title="Rename"
                       >
-                        <Edit2 className="icon-small" />
+                        <Edit2 className="Ricon-small" />
                       </button>
                       <button
                         className="RButton RButton-icon"
                         onClick={() => handleDownload(recording)}
                         title="Download"
                       >
-                        <Download className="icon-small" />
+                        <Download className="Ricon-small" />
                       </button>
                       <button
                         className="RButton RButton-icon RButton-red"
                         onClick={() => deleteRecording(recording.id)}
                         title="Delete"
                       >
-                        <Trash2 className="icon-small" />
+                        <Trash2 className="Ricon-small" />
                       </button>
                     </div>
                   </div>
@@ -276,7 +276,7 @@ const CameraRecords = () => {
               </div>
               <div className="playback-RButtons">
                 <button className="RButton RButton-icon" title="Previous 10s">
-                  <SkipBack className="icon-small" />
+                  <SkipBack className="Ricon-small" />
                 </button>
                 <button
                   className="RButton RButton-icon"
@@ -284,13 +284,13 @@ const CameraRecords = () => {
                   title={isPlaying ? "Pause" : "Play"}
                 >
                   {isPlaying ? (
-                    <Pause className="icon-small" />
+                    <Pause className="Ricon-small" />
                   ) : (
-                    <Play className="icon-small" />
+                    <Play className="Ricon-small" />
                   )}
                 </button>
                 <button className="RButton RButton-icon" title="Next 10s">
-                  <SkipForward className="icon-small" />
+                  <SkipForward className="Ricon-small" />
                 </button>
               </div>
             </div>
